@@ -14,6 +14,26 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <div class="p-5" style="font-size: 1.3em;">
+        <span
+            {{ stimulus_controller('symfony/ux-typed', {
+                strings: [
+                    'I ❤️ Symfony UX!',
+                    'Symfony UX Typed loves to type',
+                    'Symfony UX Typed and backspace',
+                    'Control the speed',
+                    'Control the cursor',
+                    'Control your destiny!!!',
+                    'Control your destiny... sort of',
+                ],
+                loop: true,
+                showCursor: true,
+                cursorChar: '✨',
+            }) }}
+        ></span>
+            </div>
+
+        {% endblock %}
     </body>
 </html>
