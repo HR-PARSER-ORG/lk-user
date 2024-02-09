@@ -1,17 +1,24 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Register{% endblock %}
+<head>
+    <title>{% block title %}Register{% endblock %}</title>
+    {{ encore_entry_link_tags('app') }}
+</head>
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="container d-flex align-items-center justify-content-center min-vh-100">
+        <form method="post" class="form-signin mx-auto" style="max-width: 400px;">
+            <h1 class="h3 mb-3 font-weight-normal">Register</h1>
 
-    <form method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
 
-        <button type="submit">Register</button>
-    </form>
+            <div class="text-center">
+                <button class="btn btn-lg btn-primary m-3" type="submit">
+                    Register
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

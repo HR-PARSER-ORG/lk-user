@@ -35,10 +35,6 @@ class SecurityController extends AbstractController
     #[Route(path: '/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, ManagerRegistry $em): Response
     {
-        if ($this->getUser() instanceof UserInterface) {
-            return $this->redirectToRoute('index');
-        }
-
         if ($request->isMethod('POST')) {
             $username = $request->request->get('username');
             $password = $request->request->get('password');
@@ -53,7 +49,7 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('security/register.html.twig');
