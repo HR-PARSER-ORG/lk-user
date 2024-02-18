@@ -5,29 +5,77 @@ $(document).ready(function() {
 
     $(document).ready(function() {
         $('#searchModifier').select2({
-            width: '100%', // Adjust the width as needed
-            placeholder: 'Select search modifier', // Optional placeholder text
-            allowClear: true, // Enable clearing selected options
+            width: '100%',
+            placeholder: 'Выберите модификатор поиска',
+            allowClear: true,
             closeOnSelect: false,
             theme: "bootstrap-5"
         });
-    });
 
-    $('#submitBtn').on('click', function() {
-        var formData = $('#jobSearchForm').serialize();
+        $('#region').select2({
+            width: '100%',
+            placeholder: 'Выберите регион',
+            allowClear: true,
+            closeOnSelect: false,
+            theme: "bootstrap-5"
+        });
 
-        $.ajax({
-            type: 'POST',
-            url: '/your-api-endpoint', // Replace with your actual API endpoint
-            data: formData,
-            success: function(response) {
-                // Handle success response
-                console.log(response);
-            },
-            error: function(error) {
-                // Handle error response
-                console.error(error);
-            }
+        $('#selectAllRegionsButton').click(function(event) {
+            event.preventDefault();
+
+            var allValues = $('#region option').map(function() {
+                return $(this).val();
+            }).get();
+
+            $('#region').val(allValues).trigger('change');
+        });
+
+        $('#selectAllIndustriesButton').click(function(event) {
+            event.preventDefault();
+
+            var allValues = $('#industry option').map(function() {
+                return $(this).val();
+            }).get();
+
+            $('#industry').val(allValues).trigger('change');
+        });
+
+        $('#industry').select2({
+            width: '100%',
+            placeholder: 'Выберите индустрию',
+            allowClear: true,
+            closeOnSelect: false,
+            theme: "bootstrap-5"
+        });
+
+
+        $('#submitBtn').on('click', function(event) {
+            event.preventDefault();
+
+            var formData = {
+                searchField: $('#searchField').val(),
+                hasSalary: $('#hasSalary').is(':checked'),
+                qualificationLevel: $('#qualificationLevel').val(),
+                region: $("#region").select2("val"),
+                vmi: $('#vmi').is(':checked'),
+                searchModifier:  $("#searchModifier").select2("val"),
+                industry: $('#industry').val(),
+                employment: $('#employment').val(),
+                schedule: $('#schedule').val(),
+                experience: $('#experience').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/handle-request',
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
         });
     });
 });

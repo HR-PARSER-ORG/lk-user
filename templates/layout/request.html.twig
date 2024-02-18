@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container mt-5">
-        <form>
+        <form id="analyticsForm" action="{{ path('handle_request') }}" method="post">
             <div class="mb-3">
                 <label for="searchField" class="form-label">Поле поиска</label>
                 <input type="text" class="form-control" id="searchField" name="searchField">
@@ -20,7 +20,13 @@
 
             <div class="mb-3">
                 <label for="region" class="form-label">Регион</label>
-                <input type="date" class="form-control" id="region" name="region">
+                <select class="form-select" id="region" name="region" multiple="multiple">
+                    {% for region in regions %}
+                        <option value="{{ region.id }}">{{ region.name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <button class="btn btn-primary" type="button" id="selectAllRegionsButton">Выбрать все регионы</button>
             </div>
 
             <div class="mb-3 form-check">
@@ -39,7 +45,18 @@
 
             <div class="mb-3">
                 <label for="industry" class="form-label">Industry</label>
-                <input type="text" class="form-control" id="industry" name="industry">
+                <select class="form-select" id="industry" name="industry" multiple="multiple">
+                    {% for industry in industries %}
+                        <optgroup label="{{ industry.name }}">
+                            <option value="{{ industry.hhId }}">{{ industry.name }}</option>
+                            {% for subIndustry in industry.hHSubIndustries %}
+                                <option value="{{ subIndustry.hhId }}">{{ subIndustry.name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                </select>
+                <br>
+                <button class="btn btn-primary" type="button" id="selectAllIndustriesButton">Выбрать все индустрии</button>
             </div>
 
             <div class="mb-3">
@@ -75,7 +92,7 @@
             </div>
 
             <div class="mb-3">
-                <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
+                <button id="submitBtn" type="button" class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>
