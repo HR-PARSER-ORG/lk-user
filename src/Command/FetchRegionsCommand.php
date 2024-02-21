@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\HHIndustry;
 use App\Entity\HHRegion;
 use App\Repository\HHRegionRepository;
 use GuzzleHttp\Client;

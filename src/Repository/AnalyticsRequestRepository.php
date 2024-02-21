@@ -22,4 +22,10 @@ class AnalyticsRequestRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, AnalyticsRequest::class);
     }
+
+    public function add(AnalyticsRequest $analyticsRequest)
+    {
+        $this->getEntityManager()->persist($analyticsRequest);
+        $this->getEntityManager()->flush();
+    }
 }

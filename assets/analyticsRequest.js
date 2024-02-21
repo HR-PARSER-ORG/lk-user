@@ -53,11 +53,11 @@ $(document).ready(function() {
             event.preventDefault();
 
             var formData = {
-                searchField: $('#searchField').val(),
+                searchText: $('#searchField').val(),
                 hasSalary: $('#hasSalary').is(':checked'),
                 qualificationLevel: $('#qualificationLevel').val(),
                 region: $("#region").select2("val"),
-                vmi: $('#vmi').is(':checked'),
+                hasVmi: $('#vmi').is(':checked'),
                 searchModifier:  $("#searchModifier").select2("val"),
                 industry: $('#industry').val(),
                 employment: $('#employment').val(),

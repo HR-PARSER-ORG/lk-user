@@ -5,14 +5,16 @@ namespace App\Entity;
 use App\Repository\AnalyticsRequestRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: AnalyticsRequestRepository::class)]
 class AnalyticsRequest
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\Column(type: "uuid", unique: true)]
+    private ?string $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $searchField = null;
@@ -27,7 +29,7 @@ class AnalyticsRequest
     private ?bool $vmi = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?string $searchModifier = null;
+    private ?array $searchModifier = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $industry = null;
@@ -44,7 +46,7 @@ class AnalyticsRequest
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $experience = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -97,12 +99,12 @@ class AnalyticsRequest
         return $this;
     }
 
-    public function getSearchModifier(): ?string
+    public function getSearchModifier(): ?array
     {
         return $this->searchModifier;
     }
 
-    public function setSearchModifier(?string $searchModifier): static
+    public function setSearchModifier(?array $searchModifier): static
     {
         $this->searchModifier = $searchModifier;
 
