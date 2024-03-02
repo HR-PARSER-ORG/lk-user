@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class FetchRegionsCommand extends Command
 {
@@ -38,6 +39,8 @@ class FetchRegionsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Fetch regions');
 
         try {
             $regionsResponse = $this->httpClient
@@ -47,24 +50,24 @@ class FetchRegionsCommand extends Command
 
             $areas = json_decode($regionsResponse, true)[0]['areas'];
 
-            $output->writeln('<info>Fetching regions...</info>');
+            $io->info('Fetching regions...');
 
             foreach ($areas as $area) {
                 if ($region = $this->HHRegionRepository->findOneBy(['hhId' => $area['id']])) {
                     $region->setName($area['name']);
                     $region->setHhId($area['id']);
-                    $output->writeln('<comment>Updated region:</comment> ' . $area['name']);
+                    $io->writeln('Updated region: ' . $area['name']);
                 } else {
                     $region = new HHRegion($area['name'], $area['id']);
-                    $output->writeln('<comment>Added region:</comment> ' . $area['name']);
+                    $io->writeln('Added region: ' . $area['name']);
                 }
 
                 $this->HHRegionRepository->add($region);
             }
 
-            $output->writeln('<info>Regions fetched successfully!</info>');
+            $io->info('Regions fetched successfully!');
         } catch (\Exception $exception) {
-            $output->writeln('<error>Error fetching regions:</error> ' . $exception->getMessage());
+            $io->error('Error fetching regions: ' . $exception->getMessage());
             return Command::FAILURE;
         }
 

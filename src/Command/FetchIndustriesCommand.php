@@ -12,6 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class FetchIndustriesCommand extends Command
 {
@@ -43,6 +44,9 @@ class FetchIndustriesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Fetch industries');
+
         try {
             $industriesResponse = $this->httpClient
                 ->request('GET', self::BASE_URI)
@@ -51,7 +55,7 @@ class FetchIndustriesCommand extends Command
 
             $industries = json_decode($industriesResponse, true);
 
-            $output->writeln('<info>Fetching industries...</info>');
+            $io->info('Fetching industries...');
 
             if ($input->getOption('refresh')) {
                 $this->HHIndustryRepository->deleteAll();
@@ -68,16 +72,16 @@ class FetchIndustriesCommand extends Command
                     $hhSubIndustry->setHhId($subIndustry['id']);
                     $hhSubIndustry->setHhIndustry($hhIndustry);
                     $this->HHSubIndustryRepository->add($hhSubIndustry);
-                    $output->writeln('<comment>Added SubIndustry:</comment> ' . $subIndustry['name']);
+                    $io->writeln('Added SubIndustry: ' . $subIndustry['name']);
                 }
 
-                $output->writeln('<comment>Added Industry:</comment> ' . $industry['name']);
+                $io->writeln('Added Industry: ' . $industry['name']);
 
             }
 
-            $output->writeln('<info>Industries fetched successfully!</info>');
+            $io->info('Industries fetched successfully!');
         } catch (\Exception $exception) {
-            $output->writeln('<error>Error fetching industries:</error> ' . $exception->getMessage());
+            $io->error('Error fetching industries: ' . $exception->getMessage());
             return Command::FAILURE;
         }
 

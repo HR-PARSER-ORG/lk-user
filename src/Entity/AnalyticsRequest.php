@@ -19,6 +19,9 @@ class AnalyticsRequest
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $searchField = null;
 
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $createdAtUnix;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $qualificationLevel = null;
 
@@ -169,5 +172,15 @@ class AnalyticsRequest
         $this->experience = $experience;
 
         return $this;
+    }
+
+    public function getCreatedAtUnix(): ?int
+    {
+        return $this->createdAtUnix;
+    }
+
+    public function setCreatedAtUnix(?int $createdAtUnix): void
+    {
+        $this->createdAtUnix = $createdAtUnix;
     }
 }
