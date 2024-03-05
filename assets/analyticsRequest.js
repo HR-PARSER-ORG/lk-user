@@ -1,8 +1,6 @@
 import $ from 'jquery';
 
 $(document).ready(function() {
-    console.log('AUE');
-
     $(document).ready(function() {
         $('#searchModifier').select2({
             width: '100%',
@@ -53,11 +51,11 @@ $(document).ready(function() {
             event.preventDefault();
 
             var formData = {
-                searchText: $('#searchField').val(),
+                searchField: $('#searchField').val(),
                 hasSalary: $('#hasSalary').is(':checked'),
                 qualificationLevel: $('#qualificationLevel').val(),
                 region: $("#region").select2("val"),
-                hasVmi: $('#vmi').is(':checked'),
+                vmi: $('#vmi').is(':checked'),
                 searchModifier:  $("#searchModifier").select2("val"),
                 industry: $('#industry').val(),
                 employment: $('#employment').val(),
@@ -70,10 +68,22 @@ $(document).ready(function() {
                 url: '/handle-request',
                 data: formData,
                 success: function (response) {
-                    console.log(response);
                 },
                 error: function (error) {
                     console.error(error);
+
+                    // Display errors in the container
+                    if (error.responseJSON && error.responseJSON.error_messages) {
+                        var errorContainer = $('#errorContainer');
+                        var errorList = $('#errorList');
+                        errorList.empty();
+
+                        $.each(error.responseJSON.error_messages, function (index, errorMessage) {
+                            errorList.append('<li>' + errorMessage + '</li>');
+                        });
+
+                        errorContainer.show();
+                    }
                 }
             });
         });

@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\AnalyticsRequest;
+use App\Form\AnalyticsRequestType;
 use App\Repository\AnalyticsRequestRepository;
 use App\Repository\HHIndustryRepository;
 use App\Repository\HHRegionRepository;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +33,7 @@ class AnalyticsController extends AbstractController
     {
         $analyticsRequest = new AnalyticsRequest();
 
-        $analyticsRequest->setSearchField($request->get('searchText'));
+        $analyticsRequest->setSearchField($request->get('searchField'));
         $analyticsRequest->setHasSalary($request->get('hasSalary'));
         $analyticsRequest->setVmi($request->get('hasVmi'));
         $analyticsRequest->setEmployment($request->get('employment'));
@@ -43,31 +45,61 @@ class AnalyticsController extends AbstractController
 
         $analyticsRequestRepository->add($analyticsRequest);
 
+        $form = $this->createForm(AnalyticsRequestType::class, $analyticsRequest, ['csrf_protection' => false]);
+        $form->submit($request->request->all());
+
+        if ($form->getErrors(true)->count() > 0) {
+            $errors = [];
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'status' => 'false',
+                'error_messages' => $errors,
+            ],
+            400
+            );
+        }
+
         $guzzleClient = new Client();
 
-        $guzzleClient->request(
-            'POST',
-            'http://45.90.35.14:88/api/v1/analytics/create/order',
-            [
-                'headers' => [
-                    "Content-Type" => "application/json",
-                ],
-                'json' => [
-                    "searchText" => $analyticsRequest->getSearchField(),
-                    "timestamp" => time(),
-                    "regionId" => $analyticsRequest->getRegion(),
-                    "allRegion" => false,
-                    "hasVmi" => false,
-                    "hasSalary" => $analyticsRequest->isHasSalary(),
-                    "externalId" => $analyticsRequest->getId(),
-                    "employment" => $analyticsRequest->getEmployment(),
-                    "experience" => $analyticsRequest->getExperience(),
-                    "schedule" => $analyticsRequest->getSchedule(),
-                    "industries" => $analyticsRequest->getIndustry(),
-                    "vacancySearchFields" => $analyticsRequest->getSearchModifier(),
+        $host = $this->getParameter('api_url');
+        $port = $this->getParameter('api_port');
+
+        try {
+            //!!!!!!!! не должно доехать до прода
+            return new JsonResponse(['status' => 'success']);
+
+            $guzzleClient->request(
+                'POST',
+                sprintf('%s:%d/api/v1/analytics/create/order', $host, $port),
+                [
+                    'headers' => [
+                        "Content-Type" => "application/json",
+                    ],
+                    'json' => [
+                        "searchText" => $analyticsRequest->getSearchField(),
+                        "timestamp" => time(),
+                        "regionId" => $analyticsRequest->getRegion(),
+                        "allRegion" => false,
+                        "hasVmi" => false,
+                        "hasSalary" => $analyticsRequest->isHasSalary(),
+                        "externalId" => $analyticsRequest->getId(),
+                        "employment" => $analyticsRequest->getEmployment(),
+                        "experience" => $analyticsRequest->getExperience(),
+                        "schedule" => $analyticsRequest->getSchedule(),
+                        "industries" => $analyticsRequest->getIndustry(),
+                        "vacancySearchFields" => $analyticsRequest->getSearchModifier(),
+                    ]
                 ]
-            ]
-        );
+            );
+        } catch (GuzzleException $e) {
+            return new JsonResponse([
+                'status' => 'false',
+                'error_message' => $e->getMessage(),
+            ]);
+        }
 
         return new JsonResponse(['status' => 'success']);
     }

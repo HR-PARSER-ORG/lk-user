@@ -44,7 +44,7 @@
                 <hr>
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a href="{{ path('home') }}" class="nav-link nav-link {% if current_page == '/' %}active{% endif %}  text-white" aria-current="page">
+                        <a href="{{ path('documents') }}" class="nav-link nav-link {% if current_page == '/' %}active{% endif %}  text-white" aria-current="page">
                             <svg class="bi me-2" width="16" height="16"></svg>
                             Home
                         </a>
@@ -79,9 +79,9 @@
             </div>
         </div>
     {% endblock %}
-    <div class="content">
-        {% block body %}
-        {% endblock %}
-    </div>
+        <div class="content">
+            {% block body %}
+            {% endblock %}
+        </div>
     </body>
 </html>

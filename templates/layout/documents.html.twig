@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container mt-5">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Хэш</th>
+                <th scope="col">Запрос</th>
+                <th scope="col">Ссылка на скачивание</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for document in documents %}
+                <tr data-id="{{ document.id }}">
+                    <td>{{ document.id|split('-')|first }}</td>
+                    <td>{{ document.searchField }}</td>
+                    <td id="downloadLink"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(documents) }}
+        </div>
+    </div>
+    {% block javascripts %}
+        {{ parent() }}
+{#        {{ encore_entry_script_tags('analyticsRequest') }}#}
+    {% endblock %}
+{% endblock %}

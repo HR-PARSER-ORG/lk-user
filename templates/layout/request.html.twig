@@ -95,6 +95,11 @@
                 <button id="submitBtn" type="button" class="btn btn-primary">Submit</button>
             </div>
         </form>
+
+        <div class="alert alert-danger" style="display: none;" id="errorContainer">
+            <h5>Ошибки:</h5>
+            <ul id="errorList"></ul>
+        </div>
     </div>
     {% block javascripts %}
         {{ parent() }}
