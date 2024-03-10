@@ -8,14 +8,16 @@
                 <th scope="col">Хэш</th>
                 <th scope="col">Запрос</th>
                 <th scope="col">Ссылка на скачивание</th>
+                <th scope="col">Статус</th>
             </tr>
             </thead>
             <tbody>
             {% for document in documents %}
-                <tr data-id="{{ document.id }}">
+                <tr data-id="{{ document.id }}" style="height: 50px">
                     <td>{{ document.id|split('-')|first }}</td>
                     <td>{{ document.searchField }}</td>
-                    <td id="downloadLink"></td>
+                    <td id="downloadLink-{{ document.id }}"></td>
+                    <td id="status-{{ document.id }}"></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -27,6 +29,6 @@
     </div>
     {% block javascripts %}
         {{ parent() }}
-{#        {{ encore_entry_script_tags('analyticsRequest') }}#}
+        {{ encore_entry_script_tags('docFetcher') }}
     {% endblock %}
 {% endblock %}

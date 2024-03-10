@@ -68,9 +68,6 @@ class AnalyticsController extends AbstractController
         $port = $this->getParameter('api_port');
 
         try {
-            //!!!!!!!! не должно доехать до прода
-            return new JsonResponse(['status' => 'success']);
-
             $guzzleClient->request(
                 'POST',
                 sprintf('%s:%d/api/v1/analytics/create/order', $host, $port),
