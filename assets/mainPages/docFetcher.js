@@ -20,7 +20,7 @@ $(document).ready(function () {
         data: JSON.stringify(postData),
         success: function (responseData) {
             responseData.data.forEach(function (item, index) {
-                var tableRow = $('tr[data-id="' + guidsArray[index] + '"]');
+                var tableRow = $('tr[data-id="' + item.guid + '"]');
 
                 if (item.filePath) {
                     var downloadLink = '<a class="btn btn-primary" href="' + item.filePath + '" download>Скачать файл</a>';
