@@ -109,7 +109,6 @@ class AnalyticsController extends AbstractController
                     'json' => $jsonData,
                 ]
             );
-            var_dump($jsonData);
         } catch (GuzzleException $e) {
             return new JsonResponse([
                 'status' => 'false',
