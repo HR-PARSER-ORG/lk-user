@@ -15,6 +15,10 @@ class FetchRegionsCommand extends Command
 {
     private Client $httpClient;
 
+    const ADDITIONAL_REGIONS = [
+        'Екатеринбург' => '3',
+    ];
+
     const BASE_URI = 'https://api.hh.ru/areas';
 
     public function __construct(
@@ -65,6 +69,21 @@ class FetchRegionsCommand extends Command
                 $this->HHRegionRepository->add($region);
             }
 
+            $io->info('Fetching additional regions...');
+
+            $additionalRegions = $this->getAdditionalRegions();
+
+            foreach ($additionalRegions as $additionalRegion) {
+                if ($region = $this->HHRegionRepository->findOneBy(['hhId' => $additionalRegion->getHhId()])) {
+                    $io->writeln('Updated region: ' . $additionalRegion->getName());
+                } else {
+                    $region = $additionalRegion;
+                    $io->writeln('Added region: ' . $additionalRegion->getName());
+                }
+
+                $this->HHRegionRepository->add($region);
+            }
+
             $io->info('Regions fetched successfully!');
         } catch (\Exception $exception) {
             $io->error('Error fetching regions: ' . $exception->getMessage());
@@ -72,5 +91,18 @@ class FetchRegionsCommand extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @return HHRegion[]
+     */
+    protected function getAdditionalRegions(): array
+    {
+        $additionalRegions = [];
+        foreach ($this::ADDITIONAL_REGIONS as $regionAlias => $regionId) {
+            $additionalRegions[] = new HHRegion($regionAlias, $regionId);
+        }
+
+        return $additionalRegions;
     }
 }

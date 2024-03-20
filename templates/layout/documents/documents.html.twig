@@ -9,15 +9,17 @@
                 <th scope="col">Запрос</th>
                 <th scope="col">Ссылка на скачивание</th>
                 <th scope="col">Статус</th>
+                <th scope="col">Дата</th>
             </tr>
             </thead>
             <tbody>
             {% for document in documents %}
                 <tr data-id="{{ document.id }}" style="height: 50px">
-                    <td>{{ document.id|split('-')|first }}</td>
+                    <td><a href="{{ path('document', {'uuid': document.id}) }}">{{ document.id|split('-')|first }}</a></td>
                     <td>{{ document.searchField }}</td>
                     <td id="downloadLink-{{ document.id }}"></td>
                     <td id="status-{{ document.id }}"></td>
+                    <td>{{ document.createdAt | date('Y-m-d H:i:s') }}</td>
                 </tr>
             {% endfor %}
             </tbody>

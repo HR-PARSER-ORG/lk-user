@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Timestampable;
 use App\Repository\AnalyticsRequestRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +11,8 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Entity(repositoryClass: AnalyticsRequestRepository::class)]
 class AnalyticsRequest
 {
+    use Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "CUSTOM")]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]

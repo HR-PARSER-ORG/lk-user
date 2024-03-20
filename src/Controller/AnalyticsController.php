@@ -28,6 +28,16 @@ class AnalyticsController extends AbstractController
         ]);
     }
 
+    #[Route('/request/{uuid}', name: 'document')]
+    public function documentPage(string $uuid, AnalyticsRequestRepository $analyticsRequestRepository)
+    {
+        $document = $analyticsRequestRepository->find(['id' => $uuid]);
+
+        return $this->render('layout/documents/document_page.html.twig', [
+           'document' => $document
+        ]);
+    }
+
     #[Route('/handle-request', name: 'handle_request', methods: ['POST'])]
     public function handleRequest(Request $request, AnalyticsRequestRepository $analyticsRequestRepository): Response
     {
@@ -42,6 +52,8 @@ class AnalyticsController extends AbstractController
         $analyticsRequest->setExperience($request->get('experience'));
         $analyticsRequest->setSearchModifier($request->get('searchModifier'));
         $analyticsRequest->setRegion($request->get('region'));
+        $analyticsRequest->setCreatedAt(new \DateTime());
+        $analyticsRequest->setUpdatedAt(new \DateTime());
 
         $analyticsRequestRepository->add($analyticsRequest);
 

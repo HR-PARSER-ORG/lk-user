@@ -26,8 +26,10 @@ $(document).ready(function () {
                     var downloadLink = '<a class="btn btn-primary" href="' + item.filePath + '" download>Скачать файл</a>';
                     tableRow.find('#downloadLink-' + item.guid).html(downloadLink);
                 } else {
-                    var generateButton = '<button class="generate-button btn btn-primary" data-guid="' + item.guid + '">Сгенерировать файл</button>';
-                    tableRow.find('#downloadLink-' + item.guid).html(generateButton);
+                    if (item.status === 'COMPLETE') {
+                        var generateButton = '<button class="generate-button btn btn-primary" data-guid="' + item.guid + '">Сгенерировать файл</button>';
+                        tableRow.find('#downloadLink-' + item.guid).html(generateButton);
+                    }
                 }
 
                 tableRow.find('#status-' + item.guid).append(item.status);

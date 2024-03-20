@@ -27,7 +27,7 @@ class AnalyticsRequestType extends AbstractType
             ->add('vmi', CheckboxType::class)
             ->add('searchModifier', CollectionType::class)
             ->add('submit', SubmitType::class)
-            ->add('industry', TextType::class)
+            ->add('industry', CollectionType::class)
             ->add('hasSalary', CheckboxType::class)
             ->add('employment', TextType::class)
             ->add('schedule', TextType::class)

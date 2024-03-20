@@ -1,0 +1,62 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-4">Analytics Request</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">General Information</div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">UUID</dt>
+                            <dd class="col-sm-8">{{ document.id }}</dd>
+
+                            <dt class="col-sm-4">Search Field</dt>
+                            <dd class="col-sm-8">{{ document.searchField }}</dd>
+
+                            <dt class="col-sm-4">Qualification Level</dt>
+                            <dd class="col-sm-8">{{ document.qualificationLevel }}</dd>
+
+                            <dt class="col-sm-4">Region</dt>
+                            <dd class="col-sm-8">{{ document.region | json_encode }}</dd>
+
+                            <dt class="col-sm-4">VMI</dt>
+                            <dd class="col-sm-8">{{ document.vmi ? 'Yes' : 'No' }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">Additional Information</div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Search Modifier</dt>
+                            <dd class="col-sm-8">{{ document.searchModifier | json_encode }}</dd>
+
+                            <dt class="col-sm-4">Industry</dt>
+                            <dd class="col-sm-8">{{ document.industry | json_encode }}</dd>
+
+                            <dt class="col-sm-4">Has Salary</dt>
+                            <dd class="col-sm-8">{{ document.hasSalary ? 'Yes' : 'No' }}</dd>
+
+                            <dt class="col-sm-4">Employment</dt>
+                            <dd class="col-sm-8">{{ document.employment }}</dd>
+
+                            <dt class="col-sm-4">Schedule</dt>
+                            <dd class="col-sm-8">{{ document.schedule }}</dd>
+
+                            <dt class="col-sm-4">Experience</dt>
+                            <dd class="col-sm-8">{{ document.experience }}</dd>
+
+                            <dt class="col-sm-4">Created At (Unix)</dt>
+                            <dd class="col-sm-8">{{ document.createdAt | date('Y-m-d H:i:s') }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

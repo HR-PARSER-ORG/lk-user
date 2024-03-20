@@ -18,7 +18,8 @@ class LayoutController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $documentsQuery = $requestRepository->createQueryBuilder('r')
+        $documentsQuery = $requestRepository->createQueryBuilder('ar')
+            ->orderBy('ar.createdAt', 'DESC')
             ->getQuery();
 
         $pagination = $paginator->paginate(
@@ -28,7 +29,7 @@ class LayoutController extends AbstractController
         );
 
         return $this->render(
-            'layout/documents.html.twig', [
+            'layout/documents/documents.html.twig', [
                 'documents' => $pagination
             ]
         );
