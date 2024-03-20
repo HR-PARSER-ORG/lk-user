@@ -22,9 +22,11 @@ class AnalyticsController extends AbstractController
     {
         $regions = $regionRepository->findAll();
         $industries = $industryRepository->findAll();
+        $industriesIds = array_column($industryRepository->getIndustryHHIds(), "hhId");
         return $this->render('layout/request.html.twig', [
             'regions' => $regions,
             'industries' => $industries,
+            'industriesIds' => $industriesIds,
         ]);
     }
 
@@ -110,6 +112,9 @@ class AnalyticsController extends AbstractController
             ]);
         }
 
-        return new JsonResponse(['status' => 'success']);
+        return new JsonResponse([
+            'status' => 'success',
+            'document_uuid' => $analyticsRequest->getId(),
+        ]);
     }
 }

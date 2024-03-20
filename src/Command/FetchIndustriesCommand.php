@@ -32,7 +32,7 @@ class FetchIndustriesCommand extends Command
     {
         $this
             ->setName('hh:fetch:industries')
-            ->addOption('refresh', 'r', InputOption::VALUE_OPTIONAL, 'Hard refresh head hunter industries', false)
+            ->addOption('refresh', 'r', InputOption::VALUE_OPTIONAL, 'Hard refresh head hunter industries', true)
             ->setDescription('Fetch industries')
             ->setHelp('This command allows you to fetch industries');
 

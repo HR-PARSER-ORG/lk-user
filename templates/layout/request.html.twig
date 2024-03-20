@@ -1,5 +1,17 @@
 {% extends "base.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .toggle-all-industries {
+            position: fixed;
+            bottom: 15%;
+            left: 25px;
+            z-index: 9999;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="container mt-5">
         <form id="analyticsForm" action="{{ path('handle_request') }}" method="post">
@@ -44,19 +56,21 @@
             </div>
 
             <div class="mb-3">
-                <label for="industry" class="form-label">Industry</label>
-                <select class="form-select" id="industry" name="industry" multiple="multiple">
-                    {% for industry in industries %}
-                        <optgroup label="{{ industry.name }}">
-                            <option value="{{ industry.hhId }}">{{ industry.name }}</option>
-                            {% for subIndustry in industry.hHSubIndustries %}
-                                <option value="{{ subIndustry.hhId }}">{{ subIndustry.name }}</option>
-                            {% endfor %}
-                        </optgroup>
-                    {% endfor %}
-                </select>
-                <br>
-                <button class="btn btn-primary" type="button" id="selectAllIndustriesButton">Выбрать все индустрии</button>
+                <button type="button" class="btn btn-primary toggle-all-industries">Скрыть/Показать все индустрии</button>
+            </div>
+
+            <div class="industry-group h2">
+                <h2>Список индустрий</h2>
+                {% for industry in industries %}
+                <div class="mb-3">
+                    <label for="industry-{{ industry.hhId }}" class="form-label"><button class="btn btn-outline-dark" type="button" id="selectAllIndustriesButton-{{ industry.hhId }}">{{ industry.name }}</button></label>
+                    <select class="form-select" id="industry-{{ industry.hhId }}" name="{{ industry.hhId }}" multiple="multiple">
+                        {% for subIndustry in industry.hHSubIndustries %}
+                            <option value="{{ subIndustry.hhId }}">{{ subIndustry.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endfor %}
             </div>
 
             <div class="mb-3">
@@ -103,6 +117,9 @@
     </div>
     {% block javascripts %}
         {{ parent() }}
+        <script>
+            var industries = {{ industriesIds|json_encode|raw }}
+        </script>
         {{ encore_entry_script_tags('analyticsRequest') }}
     {% endblock %}
 

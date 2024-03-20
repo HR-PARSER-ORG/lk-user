@@ -37,4 +37,13 @@ class HHIndustryRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($industry);
         $this->getEntityManager()->flush();
     }
+
+    public function getIndustryHHIds()
+    {
+        return $this
+            ->createQueryBuilder('hhindustry')
+            ->select('hhindustry.hhId')
+            ->getQuery()
+            ->getScalarResult();
+    }
 }

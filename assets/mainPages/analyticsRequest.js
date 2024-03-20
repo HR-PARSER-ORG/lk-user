@@ -1,44 +1,53 @@
 import $ from 'jquery';
 
 $(document).ready(function() {
-    $(document).ready(function() {
-        $('#searchModifier').select2({
-            width: '100%',
-            placeholder: 'Выберите модификатор поиска',
-            allowClear: true,
-            closeOnSelect: false,
-            theme: "bootstrap-5"
-        });
+    $('#searchModifier').select2({
+        width: '100%',
+        placeholder: 'Выберите модификатор поиска',
+        allowClear: true,
+        closeOnSelect: false,
+        theme: "bootstrap-5"
+    });
 
-        $('#region').select2({
-            width: '100%',
-            placeholder: 'Выберите регион',
-            allowClear: true,
-            closeOnSelect: false,
-            theme: "bootstrap-5"
-        });
+    $('.toggle-all-industries').click(function() {
+        $('.industry-group').toggle();
+    });
 
-        $('#selectAllRegionsButton').click(function(event) {
-            event.preventDefault();
+    $('.toggle-industry').click(function() {
+        var target = $(this).data('target');
+        $(target).toggle();
+    });
 
-            var allValues = $('#region option').map(function() {
-                return $(this).val();
-            }).get();
+    $('#region').select2({
+        width: '100%',
+        placeholder: 'Выберите регион',
+        allowClear: true,
+        closeOnSelect: false,
+        theme: "bootstrap-5"
+    });
 
-            $('#region').val(allValues).trigger('change');
-        });
+    $('#selectAllRegionsButton').click(function(event) {
+        event.preventDefault();
 
-        $('#selectAllIndustriesButton').click(function(event) {
-            event.preventDefault();
+        var allValues = $('#region option').map(function() {
+            return $(this).val();
+        }).get();
 
-            var allValues = $('#industry option').map(function() {
-                return $(this).val();
-            }).get();
+        $('#region').val(allValues).trigger('change');
+    });
 
-            $('#industry').val(allValues).trigger('change');
-        });
+    $('#selectAllIndustriesButton').click(function(event) {
+        event.preventDefault();
 
-        $('#industry').select2({
+        var allValues = $('#industry option').map(function() {
+            return $(this).val();
+        }).get();
+
+        $('#industry').val(allValues).trigger('change');
+    });
+
+    industries.forEach(function(industry) {
+        $('#industry-' + industry).select2({
             width: '100%',
             placeholder: 'Выберите индустрию',
             allowClear: true,
@@ -46,46 +55,60 @@ $(document).ready(function() {
             theme: "bootstrap-5"
         });
 
-
-        $('#submitBtn').on('click', function(event) {
+        $('#selectAllIndustriesButton-' + industry).click(function(event) {
             event.preventDefault();
 
-            var formData = {
-                searchField: $('#searchField').val(),
-                hasSalary: $('#hasSalary').is(':checked'),
-                qualificationLevel: $('#qualificationLevel').val(),
-                region: $("#region").select2("val"),
-                vmi: $('#vmi').is(':checked'),
-                searchModifier:  $("#searchModifier").select2("val"),
-                industry: $('#industry').val(),
-                employment: $('#employment').val(),
-                schedule: $('#schedule').val(),
-                experience: $('#experience').val()
-            };
+            var allValues = $('#industry-' + industry +' option').map(function() {
+                return $(this).val();
+            }).get();
 
-            $.ajax({
-                type: 'POST',
-                url: '/handle-request',
-                data: formData,
-                success: function (response) {
-                },
-                error: function (error) {
-                    console.error(error);
+            $('#industry-' + industry).val(allValues).trigger('change');
+        });
+    });
 
-                    // Display errors in the container
-                    if (error.responseJSON && error.responseJSON.error_messages) {
-                        var errorContainer = $('#errorContainer');
-                        var errorList = $('#errorList');
-                        errorList.empty();
 
-                        $.each(error.responseJSON.error_messages, function (index, errorMessage) {
-                            errorList.append('<li>' + errorMessage + '</li>');
-                        });
+    $('#submitBtn').on('click', function(event) {
+        event.preventDefault();
 
-                        errorContainer.show();
-                    }
+        var formData = {
+            searchField: $('#searchField').val(),
+            hasSalary: $('#hasSalary').is(':checked'),
+            qualificationLevel: $('#qualificationLevel').val(),
+            region: $("#region").select2("val"),
+            vmi: $('#vmi').is(':checked'),
+            searchModifier:  $("#searchModifier").select2("val"),
+            industry: $('#industry').val(),
+            employment: $('#employment').val(),
+            schedule: $('#schedule').val(),
+            experience: $('#experience').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/handle-request',
+            data: formData,
+            success: function (response) {
+                if (response && response.document_uuid) {
+                    var redirectUrl = '/request/' + response.document_uuid;
+                    window.location.href = redirectUrl;
                 }
-            });
+            },
+            error: function (error) {
+                console.error(error);
+
+                // Display errors in the container
+                if (error.responseJSON && error.responseJSON.error_messages) {
+                    var errorContainer = $('#errorContainer');
+                    var errorList = $('#errorList');
+                    errorList.empty();
+
+                    $.each(error.responseJSON.error_messages, function (index, errorMessage) {
+                        errorList.append('<li>' + errorMessage + '</li>');
+                    });
+
+                    errorContainer.show();
+                }
+            }
         });
     });
 });
