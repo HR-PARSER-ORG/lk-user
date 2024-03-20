@@ -81,6 +81,23 @@ class AnalyticsController extends AbstractController
         $host = $this->getParameter('api_url');
         $port = $this->getParameter('api_port');
 
+        $jsonData = array_filter([
+            "searchText" => $analyticsRequest->getSearchField(),
+            "timestamp" => time(),
+            "regionId" => $analyticsRequest->getRegion(),
+            "allRegion" => false,
+            "hasVmi" => false,
+            "hasSalary" => $analyticsRequest->isHasSalary(),
+            "externalId" => $analyticsRequest->getId(),
+            "employment" => $analyticsRequest->getEmployment(),
+            "experience" => $analyticsRequest->getExperience(),
+            "schedule" => $analyticsRequest->getSchedule(),
+            "industries" => $analyticsRequest->getIndustry(),
+            "vacancySearchFields" => $analyticsRequest->getSearchModifier(),
+        ], function($value) {
+            return $value !== null;
+        });
+
         try {
             $guzzleClient->request(
                 'POST',
@@ -89,22 +106,10 @@ class AnalyticsController extends AbstractController
                     'headers' => [
                         "Content-Type" => "application/json",
                     ],
-                    'json' => [
-                        "searchText" => $analyticsRequest->getSearchField(),
-                        "timestamp" => time(),
-                        "regionId" => $analyticsRequest->getRegion(),
-                        "allRegion" => false,
-                        "hasVmi" => false,
-                        "hasSalary" => $analyticsRequest->isHasSalary(),
-                        "externalId" => $analyticsRequest->getId(),
-                        "employment" => $analyticsRequest->getEmployment(),
-                        "experience" => $analyticsRequest->getExperience(),
-                        "schedule" => $analyticsRequest->getSchedule(),
-                        "industries" => $analyticsRequest->getIndustry(),
-                        "vacancySearchFields" => $analyticsRequest->getSearchModifier(),
-                    ]
+                    'json' => $jsonData,
                 ]
             );
+            var_dump($jsonData);
         } catch (GuzzleException $e) {
             return new JsonResponse([
                 'status' => 'false',

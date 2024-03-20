@@ -43,13 +43,13 @@
                             <dd class="col-sm-8">{{ document.hasSalary ? 'Yes' : 'No' }}</dd>
 
                             <dt class="col-sm-4">Employment</dt>
-                            <dd class="col-sm-8">{{ document.employment }}</dd>
+                            <dd class="col-sm-8">{{ document.employment | json_encode }}</dd>
 
                             <dt class="col-sm-4">Schedule</dt>
-                            <dd class="col-sm-8">{{ document.schedule }}</dd>
+                            <dd class="col-sm-8">{{ document.schedule | json_encode }}</dd>
 
                             <dt class="col-sm-4">Experience</dt>
-                            <dd class="col-sm-8">{{ document.experience }}</dd>
+                            <dd class="col-sm-8">{{ document.experience | json_encode }}</dd>
 
                             <dt class="col-sm-4">Created At (Unix)</dt>
                             <dd class="col-sm-8">{{ document.createdAt | date('Y-m-d H:i:s') }}</dd>

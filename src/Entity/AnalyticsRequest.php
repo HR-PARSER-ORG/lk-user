@@ -148,7 +148,11 @@ class AnalyticsRequest
 
     public function setEmployment(?string $employment): static
     {
-        $this->employment = $employment;
+        if ($employment == '') {
+            $this->employment = null;
+        } else {
+            $this->employment = $employment;
+        }
 
         return $this;
     }
@@ -160,7 +164,11 @@ class AnalyticsRequest
 
     public function setSchedule(?string $schedule): static
     {
-        $this->schedule = $schedule;
+        if ($schedule == '') {
+            $this->schedule = null;
+        } else {
+            $this->schedule = $schedule;
+        }
 
         return $this;
     }
@@ -172,7 +180,11 @@ class AnalyticsRequest
 
     public function setExperience(?string $experience): static
     {
-        $this->experience = $experience;
+        if ($experience == '') {
+            $this->experience = null;
+        } else {
+            $this->experience = $experience;
+        }
 
         return $this;
     }
