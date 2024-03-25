@@ -34,7 +34,7 @@
                 <label for="region" class="form-label">Регион</label>
                 <select class="form-select" id="region" name="region" multiple="multiple">
                     {% for region in regions %}
-                        <option value="{{ region.id }}">{{ region.name }}</option>
+                        <option value="{{ region.hhId }}">{{ region.name }}</option>
                     {% endfor %}
                 </select>
                 <br>
