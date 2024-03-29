@@ -53,7 +53,7 @@ $(document).ready(function () {
 
 
 function generateFile(guid) {
-    var generateUrl = `{API_URL}:${API_PORT}/api/v1/files/excel?guid=` + guid;
+    var generateUrl = `${API_URL}:${API_PORT}/api/v1/files/excel?guid=` + guid;
 
     $.ajax({
         type: 'POST',
