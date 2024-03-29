@@ -1,5 +1,8 @@
 import $ from 'jquery';
 
+const API_URL = process.env.API_URL;
+const API_PORT = process.env.API_PORT;
+
 $(document).ready(function () {
     var guidsArray = [];
 
@@ -12,10 +15,9 @@ $(document).ready(function () {
         guids: guidsArray
     };
 
-    //TODO: fix with env vars
     $.ajax({
         type: 'POST',
-        url: 'http://45.90.35.14:8081/api/v1/analytics/orders',
+        url: `${API_URL}:${API_PORT}/api/v1/analytics/orders`,
         contentType: 'application/json',
         data: JSON.stringify(postData),
         success: function (responseData) {
@@ -51,8 +53,7 @@ $(document).ready(function () {
 
 
 function generateFile(guid) {
-    // TODO: fix with env vars
-    var generateUrl = 'http://45.90.35.14:8081/api/v1/files/excel?guid=' + guid;
+    var generateUrl = `{API_URL}:${API_PORT}/api/v1/files/excel?guid=` + guid;
 
     $.ajax({
         type: 'POST',
