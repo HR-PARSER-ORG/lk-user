@@ -29,6 +29,12 @@
         {% endblock %}
 
         {% block javascripts %}
+            <script>
+                // Request permission for notifications
+                Notification.requestPermission().then(function (permission) {
+                    // Notification permission granted
+                });
+            </script>
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
@@ -46,13 +52,13 @@
                     <li class="nav-item">
                         <a href="{{ path('documents') }}" class="nav-link nav-link {% if current_page == '/' %}active{% endif %}  text-white" aria-current="page">
                             <svg class="bi me-2" width="16" height="16"></svg>
-                            Documents
+                            Документы
                         </a>
                     </li>
                     <li>
                         <a href="{{ path('request') }}" class="nav-link {% if current_page == '/request' %}active{% endif %} text-white">
                             <svg class="bi me-2" width="16" height="16"></svg>
-                            Request
+                            Запрос
                         </a>
                     </li>
 {#                    <li>#}

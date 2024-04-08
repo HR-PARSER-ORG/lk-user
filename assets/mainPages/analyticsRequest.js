@@ -70,6 +70,10 @@ $(document).ready(function() {
     $('#submitBtn').on('click', function(event) {
         event.preventDefault();
 
+        var industryValues = $('[id^="industry-"]').map(function() {
+            return $(this).val();
+        }).get();
+
         var formData = {
             searchField: $('#searchField').val(),
             hasSalary: $('#hasSalary').is(':checked'),
@@ -77,7 +81,7 @@ $(document).ready(function() {
             region: $("#region").select2("val"),
             vmi: $('#vmi').is(':checked'),
             searchModifier:  $("#searchModifier").select2("val"),
-            industry: $('#industry').val(),
+            industry: industryValues,
             employment: $('#employment').val(),
             schedule: $('#schedule').val(),
             experience: $('#experience').val()
@@ -96,7 +100,6 @@ $(document).ready(function() {
             error: function (error) {
                 console.error(error);
 
-                // Display errors in the container
                 if (error.responseJSON && error.responseJSON.error_messages) {
                     var errorContainer = $('#errorContainer');
                     var errorList = $('#errorList');

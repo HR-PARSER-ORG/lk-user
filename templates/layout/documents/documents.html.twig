@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="container">
         <table class="table">
             <thead>
             <tr>
@@ -9,6 +9,7 @@
                 <th scope="col">Запрос</th>
                 <th scope="col">Ссылка на скачивание</th>
                 <th scope="col">Статус</th>
+                <th scope="col">Количество</th>
                 <th scope="col">Дата</th>
             </tr>
             </thead>
@@ -19,6 +20,7 @@
                     <td>{{ document.searchField }}</td>
                     <td id="downloadLink-{{ document.id }}"></td>
                     <td id="status-{{ document.id }}"></td>
+                    <td id="count-{{ document.id }}"></td>
                     <td>{{ document.createdAt | date('Y-m-d H:i:s') }}</td>
                 </tr>
             {% endfor %}

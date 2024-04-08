@@ -28,6 +28,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('analyticsRequest', './assets/mainPages/analyticsRequest.js')
     .addEntry('docFetcher', './assets/mainPages/docFetcher.js')
+    .addEntry('notification', './assets/components/notification.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

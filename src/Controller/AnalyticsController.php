@@ -7,6 +7,7 @@ use App\Form\AnalyticsRequestType;
 use App\Repository\AnalyticsRequestRepository;
 use App\Repository\HHIndustryRepository;
 use App\Repository\HHRegionRepository;
+use App\Service\Transformer\AnalyticsResponseTransformer;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,12 +32,17 @@ class AnalyticsController extends AbstractController
     }
 
     #[Route('/request/{uuid}', name: 'document')]
-    public function documentPage(string $uuid, AnalyticsRequestRepository $analyticsRequestRepository)
+    public function documentPage(
+        string $uuid,
+        AnalyticsRequestRepository $analyticsRequestRepository,
+        AnalyticsResponseTransformer $responseTransformer
+    )
     {
         $document = $analyticsRequestRepository->find(['id' => $uuid]);
+        $response = $responseTransformer->analyticsRequestToDocument($document);
 
         return $this->render('layout/documents/document_page.html.twig', [
-           'document' => $document
+           'document' => $response
         ]);
     }
 
