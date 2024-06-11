@@ -47,17 +47,17 @@ $(document).ready(function () {
 
                     var classes = statusColorMapping[item.status];
                     if (classes) {
-                        statusCell.html('<span class="badge ' + classes + '">' + item.status + '</span>');
+                        statusCell.html('<span style="width: 200px" class="badge ' + classes + '">' + item.status + '</span>');
                     }
 
                     if (item.filePath) {
                         if (item.status === 'COMPLETE_WITH_DOCUMENT') {
-                            var downloadLink = '<a class="btn btn-primary" href="' + item.filePath + '" download>Скачать файл</a>';
+                            var downloadLink = '<a style="width: 200px" class="btn btn-primary" href="' + item.filePath + '" download>Скачать файл</a>';
                             tableRow.find('#downloadLink-' + item.guid).html(downloadLink);
                         }
                     } else {
                         if (item.status === 'COMPLETE') {
-                            var generateButton = '<button class="generate-button btn btn-primary" data-guid="' + item.guid + '">Сгенерировать файл</button>';
+                            var generateButton = '<button style="width: 200px" class="w-500 generate-button btn btn-primary" data-guid="' + item.guid + '">Сгенерировать файл</button>';
                             tableRow.find('#downloadLink-' + item.guid).html(generateButton);
                         }
                     }
