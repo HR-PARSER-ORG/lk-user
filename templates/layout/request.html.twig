@@ -25,9 +25,13 @@
                 <label class="form-check-label" for="hasSalary">Только с заработной платой</label>
             </div>
 
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="qualificationLevel" name="qualificationLevel">
+            <div class="mb-3">
                 <label for="qualificationLevel" class="form-label">Уровень квалификации</label>
+                <select class="form-select" id="qualificationLevel" name="qualificationLevel" multiple="multiple">
+                    <option value="name">Junior</option>
+                    <option value="company_name">Middle</option>
+                    <option value="description">Senior</option>
+                </select>
             </div>
 
             <div class="mb-3">

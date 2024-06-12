@@ -9,6 +9,14 @@ $(document).ready(function() {
         theme: "bootstrap-5"
     });
 
+    $('#qualificationLevel').select2({
+        width: '100%',
+        placeholder: 'Выберите уровень квалификации',
+        allowClear: true,
+        closeOnSelect: false,
+        theme: "bootstrap-5"
+    });
+
     $('.toggle-all-industries').click(function() {
         $('.industry-group').toggle();
     });
@@ -77,7 +85,6 @@ $(document).ready(function() {
         var formData = {
             searchField: $('#searchField').val(),
             hasSalary: $('#hasSalary').is(':checked'),
-            qualificationLevel: $('#qualificationLevel').val(),
             region: $("#region").select2("val"),
             vmi: $('#vmi').is(':checked'),
             searchModifier:  $("#searchModifier").select2("val"),
