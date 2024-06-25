@@ -1,0 +1,133 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .toggle-all-industries {
+            position: fixed;
+            bottom: 15%;
+            left: 25px;
+            z-index: 9999;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form id="analyticsForm" action="{{ path('handle_request') }}" method="post">
+            <div class="mb-3">
+                <label for="searchField" class="form-label">Поле поиска</label>
+                <input type="text" class="form-control" id="searchField" name="searchField">
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="hasSalary" name="hasSalary">
+                <label class="form-check-label" for="hasSalary">Только с заработной платой</label>
+            </div>
+
+            <div class="mb-3">
+                <label for="qualificationLevel" class="form-label">Уровень квалификации</label>
+                <select class="form-select" id="qualificationLevel" name="qualificationLevel" multiple="multiple">
+                    <option value="name">Junior</option>
+                    <option value="company_name">Middle</option>
+                    <option value="description">Senior</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="region" class="form-label">Регион</label>
+                <select class="form-select" id="region" name="region" multiple="multiple">
+                    {% for region in regions %}
+                        <option value="{{ region.hhId }}">{{ region.name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <button class="btn btn-primary" type="button" id="selectAllRegionsButton">Выбрать все регионы</button>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="vmi" name="vmi">
+                <label class="form-check-label" for="vmi">ДМС</label>
+            </div>
+
+            <div class="mb-3">
+                <label for="searchModifier" class="form-label">Модификатор поиска</label>
+                <select class="form-select" id="searchModifier" name="searchModifier" multiple="multiple">
+                    <option value="name">В названии вакансии</option>
+                    <option value="company_name">В названии компании</option>
+                    <option value="description">В описании вакансии</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary toggle-all-industries">Скрыть/Показать все индустрии</button>
+            </div>
+
+            <div class="industry-group h2">
+                <h2>Список индустрий</h2>
+                {% for industry in industries %}
+                <div class="mb-3">
+                    <label for="industry-{{ industry.hhId }}" class="form-label"><button class="btn btn-outline-dark" type="button" id="selectAllIndustriesButton-{{ industry.hhId }}">{{ industry.name }}</button></label>
+                    <select class="form-select" id="industry-{{ industry.hhId }}" name="{{ industry.hhId }}" multiple="multiple">
+                        {% for subIndustry in industry.hHSubIndustries %}
+                            <option value="{{ subIndustry.hhId }}">{{ subIndustry.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                <label for="employment" class="form-label">Тип занятости</label>
+                <select class="form-select" id="employment" name="employment">
+                    <option value=""></option>
+                    <option value="full">Полная занятость</option>
+                    <option value="part">Частичная занятость</option>
+                    <option value="project">Проектная работа</option>
+                    <option value="volunteer">Волонтерство</option>
+                    <option value="probation">Стажировка</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="schedule" class="form-label">График работы</label>
+                <select class="form-select" id="schedule" name="schedule">
+                    <option value=""></option>
+                    <option value="fullDay">Полный день</option>
+                    <option value="shift">Сменный график</option>
+                    <option value="flexible">Гибкий график</option>
+                    <option value="remote">Удаленная работа</option>
+                    <option value="flyInFlyOut">Вахтовый метод</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="experience" class="form-label">Опыт</label>
+                <select class="form-select" id="experience" name="experience">
+                    <option value=""></option>
+                    <option value="noExperience">Нет опыта</option>
+                    <option value="between1And3">От 1 года до 3 лет</option>
+                    <option value="between3And6">От 3 до 6 лет</option>
+                    <option value="moreThan6">Более 6 лет</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <button id="submitBtn" type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+        <div class="alert alert-danger" style="display: none;" id="errorContainer">
+            <h5>Ошибки:</h5>
+            <ul id="errorList"></ul>
+        </div>
+    </div>
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            var industries = {{ industriesIds|json_encode|raw }}
+        </script>
+        {{ encore_entry_script_tags('analyticsRequest') }}
+    {% endblock %}
+
+{% endblock %}

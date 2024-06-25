@@ -1,0 +1,90 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-4 text-primary">Запрос аналитики</h1>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card mb-4 shadow-sm rounded h-100 w-100">
+                    <div class="card-header bg-primary text-white">Общая информация</div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4"><i class="fas fa-fingerprint"></i> UUID</dt>
+                            <dd class="col-sm-8">{{ document.id }}</dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-search"></i> Поле поиска</dt>
+                            <dd class="col-sm-8">{{ document.searchField }}</dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-level-up-alt"></i> Уровень квалификации</dt>
+                            <dd class="col-sm-8">{{ document.qualificationLevel }}</dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-map-marker-alt"></i> Регион</dt>
+                            <dd class="col-sm-8">
+                                {% if document.region is not empty %}
+                                    {% for item in document.region %}
+                                        {{ item }}
+                                    {% endfor %}
+                                {% else %}
+                                    Все
+                                {% endif %}
+                            </dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-user-md"></i> ДМС</dt>
+                            <dd class="col-sm-8">{{ document.vmi }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex">
+                <div class="card mb-4 shadow-sm rounded h-100 w-100">
+                    <div class="card-header bg-primary text-white">Дополнительная информация</div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4"><i class="fas fa-filter"></i> Модификатор поиска</dt>
+                            <dd class="col-sm-8">
+                                {% for item in document.searchModifier %}
+                                    {{ item }}
+                                {% endfor %}
+                            </dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-dollar-sign"></i> Только с зарплатой</dt>
+                            <dd class="col-sm-8">{{ document.hasSalary }}</dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-briefcase"></i> Занятость</dt>
+                            <dd class="col-sm-8">{{ document.employment }}</dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-calendar-alt"></i> График</dt>
+                            <dd class="col-sm-8">{{ document.schedule }}</dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-user-clock"></i> Опыт</dt>
+                            <dd class="col-sm-8">{{ document.experience }}</dd>
+
+                            <dt class="col-sm-4"><i class="fas fa-calendar-plus"></i> Создан</dt>
+                            <dd class="col-sm-8">{{ document.createdAt | date('Y-m-d H:i:s') }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 my-4">
+                <div class="card mb-4 shadow-sm rounded">
+                    <div class="card-header bg-primary text-white">Индустрии</div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dd class="col-sm-12">
+                                {% if document.industry is not empty %}
+                                    {% for item in document.industry %}
+                                        <div>{{ item }}</div>
+                                    {% endfor %}
+                                {% else %}
+                                    Все
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

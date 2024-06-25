@@ -1,0 +1,3 @@
+parameters:
+    api_url: '%env(API_URL)%'
+    api_port: '%env(API_PORT)%'
